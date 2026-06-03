@@ -1,0 +1,4 @@
+[console_scripts]
+novitec-api = novitec_dwh.api.run:main
+novitec-etl-financial = novitec_dwh.etl.orchestration.run_financial_extraction:main
+novitec-load-financial-staging = novitec_dwh.etl.orchestration.run_financial_staging_load:main

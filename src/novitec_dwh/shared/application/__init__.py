@@ -1,0 +1,1 @@
+"""Contratos reutilizables de aplicacion."""

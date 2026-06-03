@@ -1,0 +1,68 @@
+Metadata-Version: 2.4
+Name: novitec-dwh
+Version: 0.1.0
+Summary: Pipeline ETL y API REST para el Data Warehouse de soporte tecnico de Novitec.
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi<1.0.0,>=0.116.0
+Requires-Dist: uvicorn[standard]<1.0.0,>=0.35.0
+Requires-Dist: pydantic-settings<3.0.0,>=2.10.0
+Requires-Dist: mysql-connector-python<10.0.0,>=9.4.0
+Requires-Dist: psycopg[binary]<4.0.0,>=3.2.0
+Requires-Dist: polars<2.0.0,>=1.31.0
+Requires-Dist: pandas<3.0.0,>=2.3.0
+Provides-Extra: dev
+Requires-Dist: pytest<9.0.0,>=8.4.0; extra == "dev"
+Requires-Dist: httpx<1.0.0,>=0.28.0; extra == "dev"
+
+# Novitec DWH
+
+Base inicial del proyecto para construir el pipeline ETL y la API REST del Data Warehouse de soporte tecnico.
+
+## Arquitectura propuesta
+
+Se adopta una arquitectura por capas con enfoque DDD ligero:
+
+- `contexts/`: contextos de negocio independientes por dominio analitico.
+- `domain/`: entidades y contratos del dominio.
+- `application/`: casos de uso y orquestacion de reglas.
+- `infrastructure/`: conectores, repositorios y adaptadores tecnicos.
+- `api/`: capa de presentacion HTTP con FastAPI.
+- `etl/`: puntos de entrada para ejecuciones batch del pipeline.
+- `core/`: configuracion, logging y ensamblado transversal.
+- `shared/`: contratos y componentes reutilizables.
+
+## Estructura base
+
+```text
+src/novitec_dwh
+|-- api
+|-- contexts
+|   `-- financial
+|       |-- application
+|       |-- domain
+|       `-- infrastructure
+|-- core
+|-- etl
+`-- shared
+```
+
+## Primer alcance
+
+El primer dominio implementado es `financial`, enfocado en:
+
+- `solicitudesnc`
+- `preciosorden`
+- `notificaciones`
+
+La extraccion inicial genera una zona `raw` en archivos Parquet por lotes y un
+manifiesto JSON por corrida.
+
+## Comandos esperados
+
+```bash
+uvicorn novitec_dwh.api.main:app --reload
+python -m novitec_dwh.etl.orchestration.run_financial_extraction
+python -m novitec_dwh.etl.orchestration.run_financial_staging_load
+pytest
+```

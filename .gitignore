@@ -1,0 +1,18 @@
+# Archivos de entorno local.
+.env
+.venv/
+venv/
+
+# Cache y artefactos de Python.
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Artefactos del pipeline.
+logs/
+data/raw/
+
+# Archivos generados por el sistema operativo o IDE.
+.DS_Store
+Thumbs.db
+.idea/
