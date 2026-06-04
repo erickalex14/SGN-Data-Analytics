@@ -64,5 +64,6 @@ manifiesto JSON por corrida.
 uvicorn novitec_dwh.api.main:app --reload
 python -m novitec_dwh.etl.orchestration.run_financial_extraction
 python -m novitec_dwh.etl.orchestration.run_financial_staging_load
+python -m novitec_dwh.etl.orchestration.run_financial_mart_load
 pytest
 ```

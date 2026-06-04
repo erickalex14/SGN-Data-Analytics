@@ -20,13 +20,12 @@ class PostgreSQLConnectionFactory:
     def create_connection(self) -> Connection:
         """Abre una conexion al destino PostgreSQL."""
 
-        return psycopg.connect(
-            host=self._settings.postgres_host,
-            port=self._settings.postgres_port,
-            dbname=self._settings.postgres_database,
-            user=self._settings.postgres_user,
-            password=self._settings.postgres_password,
-        )
+        if not self._settings.postgres_dsn:
+            raise ValueError(
+                "La variable POSTGRES_DSN es obligatoria para conectar con PostgreSQL."
+            )
+
+        return psycopg.connect(conninfo=self._settings.postgres_dsn)
 
     @contextmanager
     def connection_scope(self) -> Iterator[Connection]:

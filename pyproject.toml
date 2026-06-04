@@ -22,6 +22,11 @@ dependencies = [
 novitec-api = "novitec_dwh.api.run:main"
 novitec-etl-financial = "novitec_dwh.etl.orchestration.run_financial_extraction:main"
 novitec-load-financial-staging = "novitec_dwh.etl.orchestration.run_financial_staging_load:main"
+novitec-load-financial-mart = "novitec_dwh.etl.orchestration.run_financial_mart_load:main"
+novitec-etl-operational = "novitec_dwh.etl.orchestration.run_operational_extraction:main"
+novitec-load-operational-staging = "novitec_dwh.etl.orchestration.run_operational_staging_load:main"
+novitec-load-operational-mart = "novitec_dwh.etl.orchestration.run_operational_mart_load:main"
+novitec-etl-technical = "novitec_dwh.etl.orchestration.run_technical_extraction:main"
 
 [project.optional-dependencies]
 dev = [

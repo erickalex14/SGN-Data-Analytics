@@ -16,6 +16,8 @@ class Settings(BaseSettings):
     app_debug: bool = Field(default=True, alias="APP_DEBUG")
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
     api_v1_prefix: str = Field(default="/api/v1", alias="API_V1_PREFIX")
+    api_auth_enabled: bool = Field(default=False, alias="API_AUTH_ENABLED")
+    api_auth_token: str = Field(default="", alias="API_AUTH_TOKEN")
     log_directory: Path = Field(default=Path("logs"), alias="LOG_DIRECTORY")
 
     # Se controla el tamano de lote para proteger memoria en tablas pesadas.
@@ -25,6 +27,10 @@ class Settings(BaseSettings):
         default=None,
         alias="ETL_FINANCIAL_EXTRACTION_ID",
     )
+    etl_operational_extraction_id: str | None = Field(
+        default=None,
+        alias="ETL_OPERATIONAL_EXTRACTION_ID",
+    )
 
     # Se parametriza la conexion del origen transaccional MySQL.
     mysql_host: str = Field(default="localhost", alias="MYSQL_HOST")
@@ -33,15 +39,24 @@ class Settings(BaseSettings):
     mysql_user: str = Field(default="root", alias="MYSQL_USER")
     mysql_password: str = Field(default="", alias="MYSQL_PASSWORD")
 
-    # Se parametriza la conexion del destino analitico PostgreSQL.
-    postgres_host: str = Field(default="localhost", alias="POSTGRES_HOST")
-    postgres_port: int = Field(default=5432, alias="POSTGRES_PORT")
-    postgres_database: str = Field(default="novitec_dwh", alias="POSTGRES_DATABASE")
-    postgres_user: str = Field(default="postgres", alias="POSTGRES_USER")
-    postgres_password: str = Field(default="", alias="POSTGRES_PASSWORD")
+    # Se parametriza la conexion del destino analitico PostgreSQL mediante DSN
+    # para soportar proveedores gestionados y poolers externos.
+    postgres_dsn: str = Field(default="", alias="POSTGRES_DSN")
     postgres_financial_staging_schema: str = Field(
         default="stg_financial",
         alias="POSTGRES_FINANCIAL_STAGING_SCHEMA",
+    )
+    postgres_financial_mart_schema: str = Field(
+        default="dwh_financial",
+        alias="POSTGRES_FINANCIAL_MART_SCHEMA",
+    )
+    postgres_operational_staging_schema: str = Field(
+        default="stg_operational",
+        alias="POSTGRES_OPERATIONAL_STAGING_SCHEMA",
+    )
+    postgres_operational_mart_schema: str = Field(
+        default="dwh_operational",
+        alias="POSTGRES_OPERATIONAL_MART_SCHEMA",
     )
 
     model_config = SettingsConfigDict(
