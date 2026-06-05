@@ -8,6 +8,8 @@ Dominios implementados:
 
 - `financial`
 - `operational`
+- `technical`
+- `inventory`
 - `executive` para resumen consolidado de gerencia
 
 Capas disponibles:
@@ -40,7 +42,9 @@ src/novitec_dwh
 |-- contexts
 |   |-- executive
 |   |-- financial
-|   `-- operational
+|   |-- inventory
+|   |-- operational
+|   `-- technical
 |-- core
 |-- etl
 `-- shared
@@ -72,6 +76,10 @@ Schemas usados actualmente:
 - `dwh_financial`
 - `stg_operational`
 - `dwh_operational`
+- `stg_technical`
+- `dwh_technical`
+- `stg_inventory`
+- `dwh_inventory`
 
 ## Flujo ETL
 
@@ -89,6 +97,22 @@ Schemas usados actualmente:
 .\.venv\Scripts\novitec-etl-operational.exe
 .\.venv\Scripts\novitec-load-operational-staging.exe
 .\.venv\Scripts\novitec-load-operational-mart.exe
+```
+
+### Tecnico
+
+```powershell
+.\.venv\Scripts\novitec-etl-technical.exe
+.\.venv\Scripts\novitec-load-technical-staging.exe
+.\.venv\Scripts\novitec-load-technical-mart.exe
+```
+
+### Inventario
+
+```powershell
+.\.venv\Scripts\novitec-etl-inventory.exe
+.\.venv\Scripts\novitec-load-inventory-staging.exe
+.\.venv\Scripts\novitec-load-inventory-mart.exe
 ```
 
 ## API
@@ -131,12 +155,30 @@ Autenticacion:
 
 - `GET /api/v1/dashboard/executive`
 
+### Tecnico
+
+- `GET /api/v1/technical/summary`
+- `GET /api/v1/technical/reports`
+- `GET /api/v1/technical/report-photos`
+- `GET /api/v1/technical/equipment`
+- `GET /api/v1/technical/equipment-access`
+
+### Inventario
+
+- `GET /api/v1/inventory/summary`
+- `GET /api/v1/inventory/spare-parts`
+- `GET /api/v1/inventory/order-spare-parts`
+- `GET /api/v1/inventory/spare-part-requests`
+- `GET /api/v1/inventory/purchase-lists`
+
 ## Resumen ejecutivo
 
 El endpoint ejecutivo consolida:
 
 - resumen financiero
 - resumen operativo
+- resumen tecnico
+- resumen de inventario
 - KPIs derivados para gerencia
 - filtros aplicados en la consulta
 
@@ -155,7 +197,7 @@ Filtros globales disponibles:
 - logs en `logs/`
 - errores HTTP uniformes con `request_id`
 - paginacion uniforme en listados
-- auditoria de calidad en mart financiero y operativo
+- auditoria de calidad en mart financiero, operativo, tecnico e inventario
 
 ## Pruebas
 
@@ -165,6 +207,6 @@ Filtros globales disponibles:
 
 ## Siguiente expansion recomendada
 
-- dominio tecnico e informes
-- dominio inventario y repuestos
+- dominio CRM
+- dominio garantias CAS
 - vistas semanticas finales para Power BI

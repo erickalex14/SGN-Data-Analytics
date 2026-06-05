@@ -31,6 +31,18 @@ class Settings(BaseSettings):
         default=None,
         alias="ETL_OPERATIONAL_EXTRACTION_ID",
     )
+    etl_technical_extraction_id: str | None = Field(
+        default=None,
+        alias="ETL_TECHNICAL_EXTRACTION_ID",
+    )
+    etl_inventory_extraction_id: str | None = Field(
+        default=None,
+        alias="ETL_INVENTORY_EXTRACTION_ID",
+    )
+    etl_crm_extraction_id: str | None = Field(
+        default=None,
+        alias="ETL_CRM_EXTRACTION_ID",
+    )
 
     # Se parametriza la conexion del origen transaccional MySQL.
     mysql_host: str = Field(default="localhost", alias="MYSQL_HOST")
@@ -57,6 +69,30 @@ class Settings(BaseSettings):
     postgres_operational_mart_schema: str = Field(
         default="dwh_operational",
         alias="POSTGRES_OPERATIONAL_MART_SCHEMA",
+    )
+    postgres_technical_staging_schema: str = Field(
+        default="stg_technical",
+        alias="POSTGRES_TECHNICAL_STAGING_SCHEMA",
+    )
+    postgres_technical_mart_schema: str = Field(
+        default="dwh_technical",
+        alias="POSTGRES_TECHNICAL_MART_SCHEMA",
+    )
+    postgres_inventory_staging_schema: str = Field(
+        default="stg_inventory",
+        alias="POSTGRES_INVENTORY_STAGING_SCHEMA",
+    )
+    postgres_inventory_mart_schema: str = Field(
+        default="dwh_inventory",
+        alias="POSTGRES_INVENTORY_MART_SCHEMA",
+    )
+    postgres_crm_staging_schema: str = Field(
+        default="stg_crm",
+        alias="POSTGRES_CRM_STAGING_SCHEMA",
+    )
+    postgres_crm_mart_schema: str = Field(
+        default="dwh_crm",
+        alias="POSTGRES_CRM_MART_SCHEMA",
     )
 
     model_config = SettingsConfigDict(

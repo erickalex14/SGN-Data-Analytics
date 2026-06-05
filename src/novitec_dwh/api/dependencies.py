@@ -9,6 +9,14 @@ from novitec_dwh.contexts.operational.application.services import OperationalQue
 from novitec_dwh.contexts.operational.infrastructure.postgresql_operational_query_repository import (
     PostgreSQLOperationalQueryRepository,
 )
+from novitec_dwh.contexts.inventory.application.services import InventoryQueryService
+from novitec_dwh.contexts.inventory.infrastructure.postgresql_inventory_query_repository import (
+    PostgreSQLInventoryQueryRepository,
+)
+from novitec_dwh.contexts.technical.application.services import TechnicalQueryService
+from novitec_dwh.contexts.technical.infrastructure.postgresql_technical_query_repository import (
+    PostgreSQLTechnicalQueryRepository,
+)
 from novitec_dwh.core.config import get_settings
 from novitec_dwh.shared.infrastructure.postgresql import PostgreSQLConnectionFactory
 
@@ -43,4 +51,30 @@ def get_executive_dashboard_service() -> ExecutiveDashboardService:
     return ExecutiveDashboardService(
         financial_service=get_financial_query_service(),
         operational_service=get_operational_query_service(),
+        technical_service=get_technical_query_service(),
+        inventory_service=get_inventory_query_service(),
     )
+
+
+def get_technical_query_service() -> TechnicalQueryService:
+    """Construye el servicio de consultas tecnicas para la API."""
+
+    settings = get_settings()
+    connection_factory = PostgreSQLConnectionFactory(settings=settings)
+    repository = PostgreSQLTechnicalQueryRepository(
+        connection_factory=connection_factory,
+        mart_schema=settings.postgres_technical_mart_schema,
+    )
+    return TechnicalQueryService(repository=repository)
+
+
+def get_inventory_query_service() -> InventoryQueryService:
+    """Construye el servicio de consultas de inventario para la API."""
+
+    settings = get_settings()
+    connection_factory = PostgreSQLConnectionFactory(settings=settings)
+    repository = PostgreSQLInventoryQueryRepository(
+        connection_factory=connection_factory,
+        mart_schema=settings.postgres_inventory_mart_schema,
+    )
+    return InventoryQueryService(repository=repository)

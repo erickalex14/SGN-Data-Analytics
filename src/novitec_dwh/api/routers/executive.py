@@ -8,7 +8,9 @@ from fastapi import APIRouter, Depends, Query, Security
 from novitec_dwh.api.dependencies import get_executive_dashboard_service
 from novitec_dwh.api.schemas.executive import ExecutiveDashboardResponse
 from novitec_dwh.api.schemas.financial import FinancialSummaryResponse
+from novitec_dwh.api.schemas.inventory import InventorySummaryResponse
 from novitec_dwh.api.schemas.operational import OperationalSummaryResponse
+from novitec_dwh.api.schemas.technical import TechnicalSummaryResponse
 from novitec_dwh.api.security import require_api_auth
 from novitec_dwh.contexts.executive.application.services import ExecutiveDashboardService
 
@@ -46,5 +48,7 @@ def get_executive_dashboard(
         filters=asdict(dashboard.filters),
         operational=OperationalSummaryResponse(**asdict(dashboard.operational)),
         financial=FinancialSummaryResponse(**asdict(dashboard.financial)),
+        technical=TechnicalSummaryResponse(**asdict(dashboard.technical)),
+        inventory=InventorySummaryResponse(**asdict(dashboard.inventory)),
         kpis=asdict(dashboard.kpis),
     )

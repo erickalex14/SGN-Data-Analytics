@@ -14,7 +14,9 @@ from novitec_dwh.contexts.executive.application.dto import (
     ExecutiveDashboardKpis,
 )
 from novitec_dwh.contexts.financial.application.dto import FinancialSummary
+from novitec_dwh.contexts.inventory.application.dto_query import InventorySummary
 from novitec_dwh.contexts.operational.application.dto_query import OperationalSummary
+from novitec_dwh.contexts.technical.application.dto_query import TechnicalSummary
 
 
 class FakeExecutiveDashboardService:
@@ -61,12 +63,42 @@ class FakeExecutiveDashboardService:
                 total_notificaciones=831,
                 total_notificaciones_leidas=500,
             ),
+            technical=TechnicalSummary(
+                extraction_id="technical_20260605_101500",
+                total_informes=320,
+                informes_equipo_operativo=180,
+                informes_con_presupuesto=140,
+                total_fotos_informes=900,
+                total_equipos=280,
+                equipos_con_contrasena=210,
+                total_accesos_equipos=260,
+            ),
+            inventory=InventorySummary(
+                extraction_id="inventory_20260605_173536",
+                total_repuestos=2086,
+                repuestos_con_stock=1560,
+                stock_total_unidades=4820,
+                costo_total_inventario=Decimal("153240.50"),
+                total_consumos_orden=16,
+                cantidad_total_consumida=28,
+                total_solicitudes_repuesto=12,
+                solicitudes_aprobadas=5,
+                solicitudes_rechazadas=1,
+                solicitudes_pendientes=6,
+                total_listas_compra=4,
+            ),
             kpis=ExecutiveDashboardKpis(
                 tasa_aprobacion_nc=Decimal("80.53"),
                 tasa_notificaciones_leidas=Decimal("60.17"),
                 tasa_ordenes_entregadas=Decimal("43.33"),
                 tasa_ordenes_abiertas=Decimal("46.67"),
                 tasa_ordenes_garantia=Decimal("8.00"),
+                tasa_informes_equipo_operativo=Decimal("56.25"),
+                tasa_informes_con_presupuesto=Decimal("43.75"),
+                tasa_equipos_con_contrasena=Decimal("75.00"),
+                tasa_repuestos_con_stock=Decimal("74.78"),
+                tasa_solicitudes_repuesto_aprobadas=Decimal("41.67"),
+                tasa_solicitudes_repuesto_pendientes=Decimal("50.00"),
             ),
         )
 
@@ -82,7 +114,11 @@ def test_get_executive_dashboard() -> None:
     assert response.status_code == 200
     assert response.json()["operational"]["total_ordenes"] == 1500
     assert response.json()["financial"]["total_solicitudes_nc"] == 226
+    assert response.json()["technical"]["total_informes"] == 320
+    assert response.json()["inventory"]["total_repuestos"] == 2086
     assert response.json()["kpis"]["tasa_aprobacion_nc"] == "80.53"
+    assert response.json()["kpis"]["tasa_informes_equipo_operativo"] == "56.25"
+    assert response.json()["kpis"]["tasa_repuestos_con_stock"] == "74.78"
 
     app.dependency_overrides.clear()
 

@@ -10,7 +10,9 @@ from novitec_dwh.contexts.executive.application.dto import (
     ExecutiveDashboardKpis,
 )
 from novitec_dwh.contexts.financial.application.services import FinancialQueryService
+from novitec_dwh.contexts.inventory.application.services import InventoryQueryService
 from novitec_dwh.contexts.operational.application.services import OperationalQueryService
+from novitec_dwh.contexts.technical.application.services import TechnicalQueryService
 
 logger = logging.getLogger("novitec_dwh.executive.service")
 
@@ -22,11 +24,15 @@ class ExecutiveDashboardService:
         self,
         financial_service: FinancialQueryService,
         operational_service: OperationalQueryService,
+        technical_service: TechnicalQueryService,
+        inventory_service: InventoryQueryService,
     ) -> None:
         """Recibe los servicios especializados que alimentan el dashboard."""
 
         self._financial_service = financial_service
         self._operational_service = operational_service
+        self._technical_service = technical_service
+        self._inventory_service = inventory_service
 
     def get_dashboard(
         self,
@@ -70,6 +76,18 @@ class ExecutiveDashboardService:
             date_from=date_from,
             date_to=date_to,
         )
+        technical_summary = self._technical_service.get_summary(
+            technician_name=technician_name,
+            equipment_status=status_name,
+            date_from=date_from,
+            date_to=date_to,
+        )
+        inventory_summary = self._inventory_service.get_summary(
+            technician_name=technician_name,
+            request_status=status_name,
+            date_from=date_from,
+            date_to=date_to,
+        )
 
         dashboard = ExecutiveDashboard(
             generated_at=datetime.now(),
@@ -84,6 +102,8 @@ class ExecutiveDashboardService:
             ),
             operational=operational_summary,
             financial=financial_summary,
+            technical=technical_summary,
+            inventory=inventory_summary,
             kpis=ExecutiveDashboardKpis(
                 tasa_aprobacion_nc=self._calculate_ratio(
                     numerator=financial_summary.solicitudes_aprobadas,
@@ -105,12 +125,38 @@ class ExecutiveDashboardService:
                     numerator=operational_summary.ordenes_con_garantia,
                     denominator=operational_summary.total_ordenes,
                 ),
+                tasa_informes_equipo_operativo=self._calculate_ratio(
+                    numerator=technical_summary.informes_equipo_operativo,
+                    denominator=technical_summary.total_informes,
+                ),
+                tasa_informes_con_presupuesto=self._calculate_ratio(
+                    numerator=technical_summary.informes_con_presupuesto,
+                    denominator=technical_summary.total_informes,
+                ),
+                tasa_equipos_con_contrasena=self._calculate_ratio(
+                    numerator=technical_summary.equipos_con_contrasena,
+                    denominator=technical_summary.total_equipos,
+                ),
+                tasa_repuestos_con_stock=self._calculate_ratio(
+                    numerator=inventory_summary.repuestos_con_stock,
+                    denominator=inventory_summary.total_repuestos,
+                ),
+                tasa_solicitudes_repuesto_aprobadas=self._calculate_ratio(
+                    numerator=inventory_summary.solicitudes_aprobadas,
+                    denominator=inventory_summary.total_solicitudes_repuesto,
+                ),
+                tasa_solicitudes_repuesto_pendientes=self._calculate_ratio(
+                    numerator=inventory_summary.solicitudes_pendientes,
+                    denominator=inventory_summary.total_solicitudes_repuesto,
+                ),
             ),
         )
         logger.info(
-            "Dashboard ejecutivo generado | ordenes=%s | solicitudes_nc=%s | ingresos=%s",
+            "Dashboard ejecutivo generado | ordenes=%s | solicitudes_nc=%s | informes=%s | repuestos=%s | ingresos=%s",
             dashboard.operational.total_ordenes,
             dashboard.financial.total_solicitudes_nc,
+            dashboard.technical.total_informes,
+            dashboard.inventory.total_repuestos,
             dashboard.financial.monto_total_ingresos,
         )
         return dashboard

@@ -7,7 +7,9 @@ from novitec_dwh.api.middleware import register_http_middleware
 from novitec_dwh.api.routers.executive import router as executive_router
 from novitec_dwh.api.routers.financial import router as financial_router
 from novitec_dwh.api.routers.health import router as health_router
+from novitec_dwh.api.routers.inventory import router as inventory_router
 from novitec_dwh.api.routers.operational import router as operational_router
+from novitec_dwh.api.routers.technical import router as technical_router
 from novitec_dwh.core.config import get_settings
 from novitec_dwh.core.logging import configure_logging
 
@@ -49,6 +51,14 @@ app = FastAPI(
             "name": "dashboard",
             "description": "Vistas ejecutivas consolidadas para gerencia.",
         },
+        {
+            "name": "technical",
+            "description": "Consultas del dominio tecnico, informes y equipos.",
+        },
+        {
+            "name": "inventory",
+            "description": "Consultas del dominio de inventario, repuestos y abastecimiento.",
+        },
     ],
 )
 
@@ -61,3 +71,5 @@ app.include_router(health_router, prefix=settings.api_v1_prefix)
 app.include_router(financial_router, prefix=settings.api_v1_prefix)
 app.include_router(operational_router, prefix=settings.api_v1_prefix)
 app.include_router(executive_router, prefix=settings.api_v1_prefix)
+app.include_router(technical_router, prefix=settings.api_v1_prefix)
+app.include_router(inventory_router, prefix=settings.api_v1_prefix)
