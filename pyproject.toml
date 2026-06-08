@@ -35,6 +35,13 @@ novitec-load-inventory-mart = "novitec_dwh.etl.orchestration.run_inventory_mart_
 novitec-etl-crm = "novitec_dwh.etl.orchestration.run_crm_extraction:main"
 novitec-load-crm-staging = "novitec_dwh.etl.orchestration.run_crm_staging_load:main"
 novitec-load-crm-mart = "novitec_dwh.etl.orchestration.run_crm_mart_load:main"
+novitec-etl-warranty = "novitec_dwh.etl.orchestration.run_warranty_extraction:main"
+novitec-load-warranty-staging = "novitec_dwh.etl.orchestration.run_warranty_staging_load:main"
+novitec-load-warranty-mart = "novitec_dwh.etl.orchestration.run_warranty_mart_load:main"
+novitec-etl-organizational = "novitec_dwh.etl.orchestration.run_organizational_extraction:main"
+novitec-load-organizational-staging = "novitec_dwh.etl.orchestration.run_organizational_staging_load:main"
+novitec-load-organizational-mart = "novitec_dwh.etl.orchestration.run_organizational_mart_load:main"
+novitec-build-powerbi-semantic = "novitec_dwh.etl.orchestration.run_power_bi_semantic_views_build:main"
 
 [project.optional-dependencies]
 dev = [

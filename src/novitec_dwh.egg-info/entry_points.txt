@@ -1,10 +1,13 @@
 [console_scripts]
 novitec-api = novitec_dwh.api.run:main
+novitec-build-powerbi-semantic = novitec_dwh.etl.orchestration.run_power_bi_semantic_views_build:main
 novitec-etl-crm = novitec_dwh.etl.orchestration.run_crm_extraction:main
 novitec-etl-financial = novitec_dwh.etl.orchestration.run_financial_extraction:main
 novitec-etl-inventory = novitec_dwh.etl.orchestration.run_inventory_extraction:main
 novitec-etl-operational = novitec_dwh.etl.orchestration.run_operational_extraction:main
+novitec-etl-organizational = novitec_dwh.etl.orchestration.run_organizational_extraction:main
 novitec-etl-technical = novitec_dwh.etl.orchestration.run_technical_extraction:main
+novitec-etl-warranty = novitec_dwh.etl.orchestration.run_warranty_extraction:main
 novitec-load-crm-mart = novitec_dwh.etl.orchestration.run_crm_mart_load:main
 novitec-load-crm-staging = novitec_dwh.etl.orchestration.run_crm_staging_load:main
 novitec-load-financial-mart = novitec_dwh.etl.orchestration.run_financial_mart_load:main
@@ -13,5 +16,9 @@ novitec-load-inventory-mart = novitec_dwh.etl.orchestration.run_inventory_mart_l
 novitec-load-inventory-staging = novitec_dwh.etl.orchestration.run_inventory_staging_load:main
 novitec-load-operational-mart = novitec_dwh.etl.orchestration.run_operational_mart_load:main
 novitec-load-operational-staging = novitec_dwh.etl.orchestration.run_operational_staging_load:main
+novitec-load-organizational-mart = novitec_dwh.etl.orchestration.run_organizational_mart_load:main
+novitec-load-organizational-staging = novitec_dwh.etl.orchestration.run_organizational_staging_load:main
 novitec-load-technical-mart = novitec_dwh.etl.orchestration.run_technical_mart_load:main
 novitec-load-technical-staging = novitec_dwh.etl.orchestration.run_technical_staging_load:main
+novitec-load-warranty-mart = novitec_dwh.etl.orchestration.run_warranty_mart_load:main
+novitec-load-warranty-staging = novitec_dwh.etl.orchestration.run_warranty_staging_load:main

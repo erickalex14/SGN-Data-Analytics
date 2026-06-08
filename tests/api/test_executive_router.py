@@ -8,6 +8,7 @@ from fastapi.testclient import TestClient
 from novitec_dwh.api.dependencies import get_executive_dashboard_service
 from novitec_dwh.api.main import app
 from novitec_dwh.core.config import get_settings
+from novitec_dwh.contexts.crm.application.dto_query import CrmSummary
 from novitec_dwh.contexts.executive.application.dto import (
     ExecutiveDashboard,
     ExecutiveDashboardFilters,
@@ -16,7 +17,9 @@ from novitec_dwh.contexts.executive.application.dto import (
 from novitec_dwh.contexts.financial.application.dto import FinancialSummary
 from novitec_dwh.contexts.inventory.application.dto_query import InventorySummary
 from novitec_dwh.contexts.operational.application.dto_query import OperationalSummary
+from novitec_dwh.contexts.organizational.application.dto_query import OrganizationalSummary
 from novitec_dwh.contexts.technical.application.dto_query import TechnicalSummary
+from novitec_dwh.contexts.warranty.application.dto_query import WarrantySummary
 
 
 class FakeExecutiveDashboardService:
@@ -87,6 +90,44 @@ class FakeExecutiveDashboardService:
                 solicitudes_pendientes=6,
                 total_listas_compra=4,
             ),
+            crm=CrmSummary(
+                extraction_id="crm_20260605_140000",
+                total_clientes=120,
+                clientes_con_correo=85,
+                clientes_con_direccion=97,
+                clientes_con_contacto=118,
+                total_empresas=24,
+                empresas_con_correo=20,
+                empresas_con_telefono=22,
+                total_sucursalescliente=51,
+                sucursalescliente_activas=46,
+            ),
+            warranty=WarrantySummary(
+                extraction_id="warranty_20260608_150000",
+                total_cas=12,
+                cas_activos=10,
+                total_ordenes_personales=85,
+                ordenes_personales_con_caso=58,
+                ordenes_personales_cerradas=49,
+                total_ordenes_empresariales=19,
+                ordenes_empresariales_con_ticket=14,
+                ordenes_empresariales_con_horas=11,
+                total_asignaciones_usuario_cas=9,
+            ),
+            organizational=OrganizationalSummary(
+                extraction_id="organizational_20260608_220000",
+                total_usuarios=24,
+                usuarios_activos=20,
+                usuarios_con_correo=18,
+                usuarios_con_telefono=16,
+                usuarios_con_acceso_nc=7,
+                usuarios_con_grupo_acceso=19,
+                total_asignaciones_sucursal=30,
+                total_permisos_grupo=80,
+                permisos_grupo_permitidos=65,
+                total_permisos_usuario=12,
+                permisos_usuario_permitidos=9,
+            ),
             kpis=ExecutiveDashboardKpis(
                 tasa_aprobacion_nc=Decimal("80.53"),
                 tasa_notificaciones_leidas=Decimal("60.17"),
@@ -99,6 +140,16 @@ class FakeExecutiveDashboardService:
                 tasa_repuestos_con_stock=Decimal("74.78"),
                 tasa_solicitudes_repuesto_aprobadas=Decimal("41.67"),
                 tasa_solicitudes_repuesto_pendientes=Decimal("50.00"),
+                tasa_clientes_con_correo=Decimal("70.83"),
+                tasa_empresas_con_correo=Decimal("83.33"),
+                tasa_sucursalescliente_activas=Decimal("90.20"),
+                tasa_cas_activos=Decimal("83.33"),
+                tasa_ordenes_personales_garantia_con_caso=Decimal("68.24"),
+                tasa_ordenes_empresariales_garantia_con_ticket=Decimal("73.68"),
+                tasa_usuarios_activos=Decimal("83.33"),
+                tasa_usuarios_con_acceso_nc=Decimal("29.17"),
+                tasa_permisos_grupo_permitidos=Decimal("81.25"),
+                tasa_permisos_usuario_permitidos=Decimal("75.00"),
             ),
         )
 
@@ -116,9 +167,15 @@ def test_get_executive_dashboard() -> None:
     assert response.json()["financial"]["total_solicitudes_nc"] == 226
     assert response.json()["technical"]["total_informes"] == 320
     assert response.json()["inventory"]["total_repuestos"] == 2086
+    assert response.json()["crm"]["total_clientes"] == 120
+    assert response.json()["warranty"]["total_cas"] == 12
+    assert response.json()["organizational"]["total_usuarios"] == 24
     assert response.json()["kpis"]["tasa_aprobacion_nc"] == "80.53"
     assert response.json()["kpis"]["tasa_informes_equipo_operativo"] == "56.25"
     assert response.json()["kpis"]["tasa_repuestos_con_stock"] == "74.78"
+    assert response.json()["kpis"]["tasa_clientes_con_correo"] == "70.83"
+    assert response.json()["kpis"]["tasa_cas_activos"] == "83.33"
+    assert response.json()["kpis"]["tasa_usuarios_activos"] == "83.33"
 
     app.dependency_overrides.clear()
 

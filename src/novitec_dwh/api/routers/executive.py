@@ -6,11 +6,14 @@ from datetime import date
 from fastapi import APIRouter, Depends, Query, Security
 
 from novitec_dwh.api.dependencies import get_executive_dashboard_service
+from novitec_dwh.api.schemas.crm import CrmSummaryResponse
 from novitec_dwh.api.schemas.executive import ExecutiveDashboardResponse
 from novitec_dwh.api.schemas.financial import FinancialSummaryResponse
 from novitec_dwh.api.schemas.inventory import InventorySummaryResponse
 from novitec_dwh.api.schemas.operational import OperationalSummaryResponse
+from novitec_dwh.api.schemas.organizational import OrganizationalSummaryResponse
 from novitec_dwh.api.schemas.technical import TechnicalSummaryResponse
+from novitec_dwh.api.schemas.warranty import WarrantySummaryResponse
 from novitec_dwh.api.security import require_api_auth
 from novitec_dwh.contexts.executive.application.services import ExecutiveDashboardService
 
@@ -50,5 +53,8 @@ def get_executive_dashboard(
         financial=FinancialSummaryResponse(**asdict(dashboard.financial)),
         technical=TechnicalSummaryResponse(**asdict(dashboard.technical)),
         inventory=InventorySummaryResponse(**asdict(dashboard.inventory)),
+        crm=CrmSummaryResponse(**asdict(dashboard.crm)),
+        warranty=WarrantySummaryResponse(**asdict(dashboard.warranty)),
+        organizational=OrganizationalSummaryResponse(**asdict(dashboard.organizational)),
         kpis=asdict(dashboard.kpis),
     )

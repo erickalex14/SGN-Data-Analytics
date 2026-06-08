@@ -53,6 +53,36 @@ Completar `.env` con:
 .\.venv\Scripts\novitec-load-inventory-mart.exe
 ```
 
+## 5.3. Ejecutar ETL CRM
+
+```powershell
+.\.venv\Scripts\novitec-etl-crm.exe
+.\.venv\Scripts\novitec-load-crm-staging.exe
+.\.venv\Scripts\novitec-load-crm-mart.exe
+```
+
+## 5.4. Ejecutar ETL garantias
+
+```powershell
+.\.venv\Scripts\novitec-etl-warranty.exe
+.\.venv\Scripts\novitec-load-warranty-staging.exe
+.\.venv\Scripts\novitec-load-warranty-mart.exe
+```
+
+## 5.5. Ejecutar ETL organizacional
+
+```powershell
+.\.venv\Scripts\novitec-etl-organizational.exe
+.\.venv\Scripts\novitec-load-organizational-staging.exe
+.\.venv\Scripts\novitec-load-organizational-mart.exe
+```
+
+## 5.6. Publicar vistas semanticas para Power BI
+
+```powershell
+.\.venv\Scripts\novitec-build-powerbi-semantic.exe
+```
+
 ## 6. Validaciones minimas
 
 - `GET /api/v1/health`
@@ -60,6 +90,9 @@ Completar `.env` con:
 - `GET /api/v1/operational/summary`
 - `GET /api/v1/technical/summary`
 - `GET /api/v1/inventory/summary`
+- `GET /api/v1/crm/summary`
+- `GET /api/v1/warranty/summary`
+- `GET /api/v1/organizational/summary`
 - `GET /api/v1/dashboard/executive`
 
 ## 7. Archivos de interes
@@ -70,6 +103,10 @@ Completar `.env` con:
 - raw operativo: `data/raw/operational/`
 - raw tecnico: `data/raw/technical/`
 - raw inventario: `data/raw/inventory/`
+- raw CRM: `data/raw/crm/`
+- raw garantias: `data/raw/warranty/`
+- raw organizacional: `data/raw/organizational/`
+- schema semantico Power BI: `sem_power_bi`
 
 ## 8. Pruebas
 

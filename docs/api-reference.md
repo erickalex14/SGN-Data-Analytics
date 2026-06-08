@@ -47,10 +47,13 @@ Authorization: Bearer <token>
 
 Entrega un resumen consolidado de gerencia con:
 
+- bloque `crm`
 - bloque `financial`
 - bloque `operational`
 - bloque `technical`
 - bloque `inventory`
+- bloque `warranty`
+- bloque `organizational`
 - bloque `kpis`
 - bloque `filters`
 
@@ -83,6 +86,16 @@ KPIs incluidos actualmente:
 - `tasa_repuestos_con_stock`
 - `tasa_solicitudes_repuesto_aprobadas`
 - `tasa_solicitudes_repuesto_pendientes`
+- `tasa_clientes_con_correo`
+- `tasa_empresas_con_correo`
+- `tasa_sucursalescliente_activas`
+- `tasa_cas_activos`
+- `tasa_ordenes_personales_garantia_con_caso`
+- `tasa_ordenes_empresariales_garantia_con_ticket`
+- `tasa_usuarios_activos`
+- `tasa_usuarios_con_acceso_nc`
+- `tasa_permisos_grupo_permitidos`
+- `tasa_permisos_usuario_permitidos`
 
 ## Endpoints financieros
 
@@ -355,5 +368,210 @@ Filtros:
 - `has_observation`
 - `date_from`
 - `date_to`
+- `sort_by`
+- `sort_dir`
+
+## Endpoints CRM
+
+### `GET /api/v1/crm/summary`
+
+Filtros:
+
+- `search`
+- `province`
+- `is_active`
+- `date_from`
+- `date_to`
+
+### `GET /api/v1/crm/customers`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `search`
+- `identification`
+- `has_email`
+- `has_address`
+- `sort_by`
+- `sort_dir`
+
+### `GET /api/v1/crm/companies`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `search`
+- `ruc`
+- `has_email`
+- `has_phone`
+- `date_from`
+- `date_to`
+- `sort_by`
+- `sort_dir`
+
+### `GET /api/v1/crm/customer-branches`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `branch_code`
+- `branch_name`
+- `province`
+- `novitec_branch_name`
+- `is_active`
+- `date_from`
+- `date_to`
+- `sort_by`
+- `sort_dir`
+
+## Endpoints de garantias
+
+### `GET /api/v1/warranty/summary`
+
+Filtros:
+
+- `service_center_name`
+- `technician_id`
+- `user_id`
+- `warranty_status`
+- `warranty_type`
+- `order_status`
+- `date_from`
+- `date_to`
+
+### `GET /api/v1/warranty/service-centers`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `service_center_name`
+- `prefix_code`
+- `brand_name`
+- `city_name`
+- `is_active`
+- `sort_by`
+- `sort_dir`
+
+### `GET /api/v1/warranty/personal-orders`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `order_number`
+- `service_center_name`
+- `technician_id`
+- `warranty_status`
+- `warranty_type`
+- `order_status`
+- `has_case_number`
+- `is_closed`
+- `date_from`
+- `date_to`
+- `sort_by`
+- `sort_dir`
+
+### `GET /api/v1/warranty/company-orders`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `order_number`
+- `service_center_name`
+- `technician_id`
+- `company_id`
+- `order_status`
+- `has_ticket_number`
+- `has_worked_hours`
+- `date_from`
+- `date_to`
+- `sort_by`
+- `sort_dir`
+
+### `GET /api/v1/warranty/user-assignments`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `user_id`
+- `user_login`
+- `user_name`
+- `service_center_name`
+- `sort_by`
+- `sort_dir`
+
+## Endpoints organizacionales
+
+### `GET /api/v1/organizational/summary`
+
+Filtros:
+
+- `branch_city`
+- `role_name`
+- `access_group_name`
+- `is_active`
+- `can_access_nc`
+
+### `GET /api/v1/organizational/users`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `search`
+- `role_name`
+- `branch_city`
+- `access_group_name`
+- `is_active`
+- `can_access_nc`
+- `has_email`
+- `has_phone`
+- `sort_by`
+- `sort_dir`
+
+### `GET /api/v1/organizational/user-branches`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `user_id`
+- `user_login`
+- `branch_id`
+- `branch_city`
+- `sort_by`
+- `sort_dir`
+
+### `GET /api/v1/organizational/group-permissions`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `group_name`
+- `module_name`
+- `action_name`
+- `is_allowed`
+- `is_superadmin`
+- `sort_by`
+- `sort_dir`
+
+### `GET /api/v1/organizational/user-permissions`
+
+Filtros:
+
+- `limit`
+- `offset`
+- `user_id`
+- `user_login`
+- `module_name`
+- `action_name`
+- `is_allowed`
 - `sort_by`
 - `sort_dir`

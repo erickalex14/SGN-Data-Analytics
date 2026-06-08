@@ -43,6 +43,14 @@ class Settings(BaseSettings):
         default=None,
         alias="ETL_CRM_EXTRACTION_ID",
     )
+    etl_warranty_extraction_id: str | None = Field(
+        default=None,
+        alias="ETL_WARRANTY_EXTRACTION_ID",
+    )
+    etl_organizational_extraction_id: str | None = Field(
+        default=None,
+        alias="ETL_ORGANIZATIONAL_EXTRACTION_ID",
+    )
 
     # Se parametriza la conexion del origen transaccional MySQL.
     mysql_host: str = Field(default="localhost", alias="MYSQL_HOST")
@@ -93,6 +101,26 @@ class Settings(BaseSettings):
     postgres_crm_mart_schema: str = Field(
         default="dwh_crm",
         alias="POSTGRES_CRM_MART_SCHEMA",
+    )
+    postgres_warranty_staging_schema: str = Field(
+        default="stg_warranty",
+        alias="POSTGRES_WARRANTY_STAGING_SCHEMA",
+    )
+    postgres_warranty_mart_schema: str = Field(
+        default="dwh_warranty",
+        alias="POSTGRES_WARRANTY_MART_SCHEMA",
+    )
+    postgres_organizational_staging_schema: str = Field(
+        default="stg_organizational",
+        alias="POSTGRES_ORGANIZATIONAL_STAGING_SCHEMA",
+    )
+    postgres_organizational_mart_schema: str = Field(
+        default="dwh_organizational",
+        alias="POSTGRES_ORGANIZATIONAL_MART_SCHEMA",
+    )
+    postgres_semantic_schema: str = Field(
+        default="sem_power_bi",
+        alias="POSTGRES_SEMANTIC_SCHEMA",
     )
 
     model_config = SettingsConfigDict(

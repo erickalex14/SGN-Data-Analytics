@@ -4,12 +4,15 @@ from fastapi import FastAPI
 
 from novitec_dwh.api.exception_handlers import register_exception_handlers
 from novitec_dwh.api.middleware import register_http_middleware
+from novitec_dwh.api.routers.crm import router as crm_router
 from novitec_dwh.api.routers.executive import router as executive_router
 from novitec_dwh.api.routers.financial import router as financial_router
 from novitec_dwh.api.routers.health import router as health_router
 from novitec_dwh.api.routers.inventory import router as inventory_router
+from novitec_dwh.api.routers.organizational import router as organizational_router
 from novitec_dwh.api.routers.operational import router as operational_router
 from novitec_dwh.api.routers.technical import router as technical_router
+from novitec_dwh.api.routers.warranty import router as warranty_router
 from novitec_dwh.core.config import get_settings
 from novitec_dwh.core.logging import configure_logging
 
@@ -59,6 +62,18 @@ app = FastAPI(
             "name": "inventory",
             "description": "Consultas del dominio de inventario, repuestos y abastecimiento.",
         },
+        {
+            "name": "crm",
+            "description": "Consultas del dominio CRM, clientes, empresas y sucursales.",
+        },
+        {
+            "name": "warranty",
+            "description": "Consultas del dominio de garantias, CAS y ordenes asociadas.",
+        },
+        {
+            "name": "organizational",
+            "description": "Consultas del dominio organizacional, usuarios, sucursales y permisos.",
+        },
     ],
 )
 
@@ -73,3 +88,6 @@ app.include_router(operational_router, prefix=settings.api_v1_prefix)
 app.include_router(executive_router, prefix=settings.api_v1_prefix)
 app.include_router(technical_router, prefix=settings.api_v1_prefix)
 app.include_router(inventory_router, prefix=settings.api_v1_prefix)
+app.include_router(crm_router, prefix=settings.api_v1_prefix)
+app.include_router(warranty_router, prefix=settings.api_v1_prefix)
+app.include_router(organizational_router, prefix=settings.api_v1_prefix)

@@ -23,10 +23,13 @@ Pipeline ETL y API REST para el Data Warehouse del sistema de soporte tecnico de
 
 Dominios implementados:
 
+- `crm`
+- `warranty`
 - `financial`
 - `operational`
 - `technical`
 - `inventory`
+- `organizational`
 - `executive` para resumen consolidado de gerencia
 
 Capas disponibles:
@@ -57,11 +60,14 @@ src/novitec_dwh
 |   |-- routers
 |   `-- schemas
 |-- contexts
+|   |-- crm
 |   |-- executive
 |   |-- financial
 |   |-- inventory
 |   |-- operational
-|   `-- technical
+|   |-- organizational
+|   |-- technical
+|   `-- warranty
 |-- core
 |-- etl
 `-- shared
@@ -97,6 +103,13 @@ Schemas usados actualmente:
 - `dwh_technical`
 - `stg_inventory`
 - `dwh_inventory`
+- `stg_crm`
+- `dwh_crm`
+- `stg_warranty`
+- `dwh_warranty`
+- `stg_organizational`
+- `dwh_organizational`
+- `sem_power_bi`
 
 ## Flujo ETL
 
@@ -130,6 +143,36 @@ Schemas usados actualmente:
 .\.venv\Scripts\novitec-etl-inventory.exe
 .\.venv\Scripts\novitec-load-inventory-staging.exe
 .\.venv\Scripts\novitec-load-inventory-mart.exe
+```
+
+### CRM
+
+```powershell
+.\.venv\Scripts\novitec-etl-crm.exe
+.\.venv\Scripts\novitec-load-crm-staging.exe
+.\.venv\Scripts\novitec-load-crm-mart.exe
+```
+
+### Garantias
+
+```powershell
+.\.venv\Scripts\novitec-etl-warranty.exe
+.\.venv\Scripts\novitec-load-warranty-staging.exe
+.\.venv\Scripts\novitec-load-warranty-mart.exe
+```
+
+### Organizacional
+
+```powershell
+.\.venv\Scripts\novitec-etl-organizational.exe
+.\.venv\Scripts\novitec-load-organizational-staging.exe
+.\.venv\Scripts\novitec-load-organizational-mart.exe
+```
+
+### Vistas semanticas Power BI
+
+```powershell
+.\.venv\Scripts\novitec-build-powerbi-semantic.exe
 ```
 
 ## API
@@ -188,6 +231,29 @@ Autenticacion:
 - `GET /api/v1/inventory/spare-part-requests`
 - `GET /api/v1/inventory/purchase-lists`
 
+### CRM
+
+- `GET /api/v1/crm/summary`
+- `GET /api/v1/crm/customers`
+- `GET /api/v1/crm/companies`
+- `GET /api/v1/crm/customer-branches`
+
+### Garantias
+
+- `GET /api/v1/warranty/summary`
+- `GET /api/v1/warranty/service-centers`
+- `GET /api/v1/warranty/personal-orders`
+- `GET /api/v1/warranty/company-orders`
+- `GET /api/v1/warranty/user-assignments`
+
+### Organizacional
+
+- `GET /api/v1/organizational/summary`
+- `GET /api/v1/organizational/users`
+- `GET /api/v1/organizational/user-branches`
+- `GET /api/v1/organizational/group-permissions`
+- `GET /api/v1/organizational/user-permissions`
+
 ## Resumen ejecutivo
 
 El endpoint ejecutivo consolida:
@@ -196,6 +262,9 @@ El endpoint ejecutivo consolida:
 - resumen operativo
 - resumen tecnico
 - resumen de inventario
+- resumen CRM
+- resumen de garantias
+- resumen organizacional
 - KPIs derivados para gerencia
 - filtros aplicados en la consulta
 
@@ -214,7 +283,7 @@ Filtros globales disponibles:
 - logs en `logs/`
 - errores HTTP uniformes con `request_id`
 - paginacion uniforme en listados
-- auditoria de calidad en mart financiero, operativo, tecnico e inventario
+- auditoria de calidad en mart financiero, operativo, tecnico, inventario, CRM, garantias y organizacional
 
 ## Pruebas
 
@@ -224,6 +293,4 @@ Filtros globales disponibles:
 
 ## Siguiente expansion recomendada
 
-- dominio CRM
-- dominio garantias CAS
 - vistas semanticas finales para Power BI

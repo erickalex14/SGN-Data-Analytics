@@ -4,10 +4,13 @@ from dataclasses import dataclass
 from datetime import date, datetime
 from decimal import Decimal
 
+from novitec_dwh.contexts.crm.application.dto_query import CrmSummary
 from novitec_dwh.contexts.financial.application.dto import FinancialSummary
 from novitec_dwh.contexts.inventory.application.dto_query import InventorySummary
 from novitec_dwh.contexts.operational.application.dto_query import OperationalSummary
+from novitec_dwh.contexts.organizational.application.dto_query import OrganizationalSummary
 from novitec_dwh.contexts.technical.application.dto_query import TechnicalSummary
+from novitec_dwh.contexts.warranty.application.dto_query import WarrantySummary
 
 
 @dataclass(slots=True)
@@ -38,6 +41,16 @@ class ExecutiveDashboardKpis:
     tasa_repuestos_con_stock: Decimal | None
     tasa_solicitudes_repuesto_aprobadas: Decimal | None
     tasa_solicitudes_repuesto_pendientes: Decimal | None
+    tasa_clientes_con_correo: Decimal | None
+    tasa_empresas_con_correo: Decimal | None
+    tasa_sucursalescliente_activas: Decimal | None
+    tasa_cas_activos: Decimal | None
+    tasa_ordenes_personales_garantia_con_caso: Decimal | None
+    tasa_ordenes_empresariales_garantia_con_ticket: Decimal | None
+    tasa_usuarios_activos: Decimal | None
+    tasa_usuarios_con_acceso_nc: Decimal | None
+    tasa_permisos_grupo_permitidos: Decimal | None
+    tasa_permisos_usuario_permitidos: Decimal | None
 
 
 @dataclass(slots=True)
@@ -50,4 +63,7 @@ class ExecutiveDashboard:
     financial: FinancialSummary
     technical: TechnicalSummary
     inventory: InventorySummary
+    crm: CrmSummary
+    warranty: WarrantySummary
+    organizational: OrganizationalSummary
     kpis: ExecutiveDashboardKpis

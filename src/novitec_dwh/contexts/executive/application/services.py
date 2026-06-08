@@ -4,6 +4,7 @@ import logging
 from datetime import date, datetime
 from decimal import Decimal, ROUND_HALF_UP
 
+from novitec_dwh.contexts.crm.application.services import CrmQueryService
 from novitec_dwh.contexts.executive.application.dto import (
     ExecutiveDashboard,
     ExecutiveDashboardFilters,
@@ -12,7 +13,11 @@ from novitec_dwh.contexts.executive.application.dto import (
 from novitec_dwh.contexts.financial.application.services import FinancialQueryService
 from novitec_dwh.contexts.inventory.application.services import InventoryQueryService
 from novitec_dwh.contexts.operational.application.services import OperationalQueryService
+from novitec_dwh.contexts.organizational.application.services import (
+    OrganizationalQueryService,
+)
 from novitec_dwh.contexts.technical.application.services import TechnicalQueryService
+from novitec_dwh.contexts.warranty.application.services import WarrantyQueryService
 
 logger = logging.getLogger("novitec_dwh.executive.service")
 
@@ -26,6 +31,9 @@ class ExecutiveDashboardService:
         operational_service: OperationalQueryService,
         technical_service: TechnicalQueryService,
         inventory_service: InventoryQueryService,
+        crm_service: CrmQueryService,
+        warranty_service: WarrantyQueryService,
+        organizational_service: OrganizationalQueryService,
     ) -> None:
         """Recibe los servicios especializados que alimentan el dashboard."""
 
@@ -33,6 +41,9 @@ class ExecutiveDashboardService:
         self._operational_service = operational_service
         self._technical_service = technical_service
         self._inventory_service = inventory_service
+        self._crm_service = crm_service
+        self._warranty_service = warranty_service
+        self._organizational_service = organizational_service
 
     def get_dashboard(
         self,
@@ -88,6 +99,27 @@ class ExecutiveDashboardService:
             date_from=date_from,
             date_to=date_to,
         )
+        crm_summary = self._crm_service.get_summary(
+            date_from=date_from,
+            date_to=date_to,
+        )
+        warranty_summary = self._warranty_service.get_summary(
+            technician_id=None,
+            user_id=None,
+            service_center_name=None,
+            warranty_status=status_name,
+            warranty_type=None,
+            order_status=status_name,
+            date_from=date_from,
+            date_to=date_to,
+        )
+        organizational_summary = self._organizational_service.get_summary(
+            branch_city=branch_name,
+            role_name=None,
+            access_group_name=None,
+            is_active=None,
+            can_access_nc=None,
+        )
 
         dashboard = ExecutiveDashboard(
             generated_at=datetime.now(),
@@ -104,6 +136,9 @@ class ExecutiveDashboardService:
             financial=financial_summary,
             technical=technical_summary,
             inventory=inventory_summary,
+            crm=crm_summary,
+            warranty=warranty_summary,
+            organizational=organizational_summary,
             kpis=ExecutiveDashboardKpis(
                 tasa_aprobacion_nc=self._calculate_ratio(
                     numerator=financial_summary.solicitudes_aprobadas,
@@ -149,14 +184,57 @@ class ExecutiveDashboardService:
                     numerator=inventory_summary.solicitudes_pendientes,
                     denominator=inventory_summary.total_solicitudes_repuesto,
                 ),
+                tasa_clientes_con_correo=self._calculate_ratio(
+                    numerator=crm_summary.clientes_con_correo,
+                    denominator=crm_summary.total_clientes,
+                ),
+                tasa_empresas_con_correo=self._calculate_ratio(
+                    numerator=crm_summary.empresas_con_correo,
+                    denominator=crm_summary.total_empresas,
+                ),
+                tasa_sucursalescliente_activas=self._calculate_ratio(
+                    numerator=crm_summary.sucursalescliente_activas,
+                    denominator=crm_summary.total_sucursalescliente,
+                ),
+                tasa_cas_activos=self._calculate_ratio(
+                    numerator=warranty_summary.cas_activos,
+                    denominator=warranty_summary.total_cas,
+                ),
+                tasa_ordenes_personales_garantia_con_caso=self._calculate_ratio(
+                    numerator=warranty_summary.ordenes_personales_con_caso,
+                    denominator=warranty_summary.total_ordenes_personales,
+                ),
+                tasa_ordenes_empresariales_garantia_con_ticket=self._calculate_ratio(
+                    numerator=warranty_summary.ordenes_empresariales_con_ticket,
+                    denominator=warranty_summary.total_ordenes_empresariales,
+                ),
+                tasa_usuarios_activos=self._calculate_ratio(
+                    numerator=organizational_summary.usuarios_activos,
+                    denominator=organizational_summary.total_usuarios,
+                ),
+                tasa_usuarios_con_acceso_nc=self._calculate_ratio(
+                    numerator=organizational_summary.usuarios_con_acceso_nc,
+                    denominator=organizational_summary.total_usuarios,
+                ),
+                tasa_permisos_grupo_permitidos=self._calculate_ratio(
+                    numerator=organizational_summary.permisos_grupo_permitidos,
+                    denominator=organizational_summary.total_permisos_grupo,
+                ),
+                tasa_permisos_usuario_permitidos=self._calculate_ratio(
+                    numerator=organizational_summary.permisos_usuario_permitidos,
+                    denominator=organizational_summary.total_permisos_usuario,
+                ),
             ),
         )
         logger.info(
-            "Dashboard ejecutivo generado | ordenes=%s | solicitudes_nc=%s | informes=%s | repuestos=%s | ingresos=%s",
+            "Dashboard ejecutivo generado | ordenes=%s | solicitudes_nc=%s | informes=%s | repuestos=%s | clientes=%s | cas=%s | usuarios=%s | ingresos=%s",
             dashboard.operational.total_ordenes,
             dashboard.financial.total_solicitudes_nc,
             dashboard.technical.total_informes,
             dashboard.inventory.total_repuestos,
+            dashboard.crm.total_clientes,
+            dashboard.warranty.total_cas,
+            dashboard.organizational.total_usuarios,
             dashboard.financial.monto_total_ingresos,
         )
         return dashboard

@@ -5,10 +5,13 @@ from decimal import Decimal
 
 from pydantic import BaseModel
 
+from novitec_dwh.api.schemas.crm import CrmSummaryResponse
 from novitec_dwh.api.schemas.financial import FinancialSummaryResponse
 from novitec_dwh.api.schemas.inventory import InventorySummaryResponse
 from novitec_dwh.api.schemas.operational import OperationalSummaryResponse
+from novitec_dwh.api.schemas.organizational import OrganizationalSummaryResponse
 from novitec_dwh.api.schemas.technical import TechnicalSummaryResponse
+from novitec_dwh.api.schemas.warranty import WarrantySummaryResponse
 
 
 class ExecutiveDashboardFiltersResponse(BaseModel):
@@ -37,6 +40,16 @@ class ExecutiveDashboardKpisResponse(BaseModel):
     tasa_repuestos_con_stock: Decimal | None
     tasa_solicitudes_repuesto_aprobadas: Decimal | None
     tasa_solicitudes_repuesto_pendientes: Decimal | None
+    tasa_clientes_con_correo: Decimal | None
+    tasa_empresas_con_correo: Decimal | None
+    tasa_sucursalescliente_activas: Decimal | None
+    tasa_cas_activos: Decimal | None
+    tasa_ordenes_personales_garantia_con_caso: Decimal | None
+    tasa_ordenes_empresariales_garantia_con_ticket: Decimal | None
+    tasa_usuarios_activos: Decimal | None
+    tasa_usuarios_con_acceso_nc: Decimal | None
+    tasa_permisos_grupo_permitidos: Decimal | None
+    tasa_permisos_usuario_permitidos: Decimal | None
 
 
 class ExecutiveDashboardResponse(BaseModel):
@@ -48,4 +61,7 @@ class ExecutiveDashboardResponse(BaseModel):
     financial: FinancialSummaryResponse
     technical: TechnicalSummaryResponse
     inventory: InventorySummaryResponse
+    crm: CrmSummaryResponse
+    warranty: WarrantySummaryResponse
+    organizational: OrganizationalSummaryResponse
     kpis: ExecutiveDashboardKpisResponse
