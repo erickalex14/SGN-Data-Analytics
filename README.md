@@ -15,6 +15,27 @@ Dominios implementados:
 - `organizational`
 - `executive` para resumen consolidado de gerencia
 
+## Portal frontend
+
+Se definio una linea de trabajo para un portal ejecutivo web que consumira la API y reemplazara el consumo manual principal en Power BI.
+
+Plan:
+
+- [docs/frontend-portal-plan.md](C:\Users\LENOVO\Desktop\Data Analytics Novitec SGN\docs\frontend-portal-plan.md)
+
+Base tecnica creada en:
+
+- [frontend/novitec-portal](C:\Users\LENOVO\Desktop\Data Analytics Novitec SGN\frontend\novitec-portal)
+
+Comandos del portal:
+
+```powershell
+cd frontend\novitec-portal
+corepack pnpm dev
+corepack pnpm check
+corepack pnpm build
+```
+
 Capas disponibles:
 
 - extraccion `MySQL -> raw`
